@@ -6,6 +6,13 @@ import io.netty.channel.SimpleChannelInboundHandler;
 
 public class RPGClientHandler extends SimpleChannelInboundHandler<String> {
 
+    private ClientEvent clientEvent;
+
+    public RPGClientHandler(ClientEvent clientEvent){
+
+        this.clientEvent = clientEvent;
+    }
+
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
 
@@ -23,6 +30,6 @@ public class RPGClientHandler extends SimpleChannelInboundHandler<String> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
 
-        System.out.println("Server say : " + msg);
+        clientEvent.processing(ctx, msg);
     }
 }

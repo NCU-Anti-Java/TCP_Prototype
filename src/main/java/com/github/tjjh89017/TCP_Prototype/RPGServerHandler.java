@@ -8,12 +8,19 @@ import io.netty.channel.SimpleChannelInboundHandler;
 
 public class RPGServerHandler extends SimpleChannelInboundHandler<String>{
 
+    private ServerEvent serverEvent;
+
+    public RPGServerHandler(ServerEvent serverEvent){
+
+        this.serverEvent = serverEvent;
+    }
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
 
         System.out.println(ctx.channel().remoteAddress() + " Say : " + msg);
 
-        ctx.writeAndFlush("Received your message !\n");
+        serverEvent.processing(ctx, msg);
     }
 
     @Override

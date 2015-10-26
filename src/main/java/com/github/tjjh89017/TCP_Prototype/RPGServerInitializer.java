@@ -11,6 +11,13 @@ import io.netty.handler.codec.string.StringEncoder;
 
 public class RPGServerInitializer extends ChannelInitializer<SocketChannel>{
 
+    private ServerEvent serverEvent;
+
+    public RPGServerInitializer(ServerEvent serverEvent){
+
+        this.serverEvent = serverEvent;
+    }
+
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {
         ChannelPipeline channelPipeline = ch.pipeline();
@@ -19,6 +26,6 @@ public class RPGServerInitializer extends ChannelInitializer<SocketChannel>{
         channelPipeline.addLast("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()));
         channelPipeline.addLast("decoder", new StringDecoder());
         channelPipeline.addLast("encoder", new StringEncoder());
-        channelPipeline.addLast("handler", new RPGServerHandler());
+        channelPipeline.addLast("handler", new RPGServerHandler(serverEvent));
     }
 }

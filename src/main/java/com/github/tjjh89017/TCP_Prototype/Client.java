@@ -18,6 +18,8 @@ public class Client {
     private Channel channel;
     private Bootstrap bootstrap;
 
+    private ClientEvent clientEvent = new ClientEvent();
+
     public Client(){
 
 
@@ -39,22 +41,14 @@ public class Client {
 
         eventLoopGroup = new NioEventLoopGroup();
 
-        try{
-            bootstrap = new Bootstrap();
-            bootstrap.group(eventLoopGroup).channel(NioSocketChannel.class).handler(new PRGClientInitializer());
+        bootstrap = new Bootstrap();
+        bootstrap.group(eventLoopGroup).channel(NioSocketChannel.class).handler(new PRGClientInitializer(clientEvent));
 
-            channel = bootstrap.connect(host, port).sync().channel();
-
-            // send here
-            channel.writeAndFlush("Here is A\n");
-
-            // wait server msg recv
-            Thread.sleep(100);
-        }
-        finally {
-            eventLoopGroup.shutdownGracefully();
-        }
+        channel = bootstrap.connect(host, port).sync().channel();
     }
 
+    public void close() {
 
+        eventLoopGroup.shutdownGracefully();
+    }
 }

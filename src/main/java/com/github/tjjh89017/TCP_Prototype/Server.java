@@ -15,6 +15,8 @@ public class Server {
     private EventLoopGroup workGroup;
     private ServerBootstrap serverBootstrap;
 
+    private ServerEvent serverEvent = new ServerEvent();
+
 
     public Server(){
 
@@ -27,24 +29,25 @@ public class Server {
         this.port = port;
     }
 
-    public void start() throws InterruptedException{
+    public void start() throws InterruptedException {
 
         bossGroup = new NioEventLoopGroup();
         workGroup = new NioEventLoopGroup();
 
-        try{
-            serverBootstrap = new ServerBootstrap();
-            serverBootstrap.group(bossGroup, workGroup);
-            serverBootstrap.channel(NioServerSocketChannel.class);
+        serverBootstrap = new ServerBootstrap();
+        serverBootstrap.group(bossGroup, workGroup);
+        serverBootstrap.channel(NioServerSocketChannel.class);
 
-            serverBootstrap.childHandler(new RPGServerInitializer());
+        serverBootstrap.childHandler(new RPGServerInitializer(serverEvent));
 
-            ChannelFuture channelFuture = serverBootstrap.bind(port).sync();
-            channelFuture.channel().closeFuture().sync();
-        }
-        finally{
-            bossGroup.shutdownGracefully();
-            workGroup.shutdownGracefully();
-        }
+        ChannelFuture channelFuture = serverBootstrap.bind(port).sync();
+        channelFuture.channel().closeFuture().sync();
+    }
+
+    public void close( ){
+
+        bossGroup.shutdownGracefully();
+        workGroup.shutdownGracefully();
+
     }
 }
