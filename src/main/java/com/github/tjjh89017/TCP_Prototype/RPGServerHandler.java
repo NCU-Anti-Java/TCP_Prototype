@@ -18,7 +18,7 @@ public class RPGServerHandler extends SimpleChannelInboundHandler<String>{
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
 
-        System.out.println(ctx.channel().remoteAddress() + " Say : " + msg);
+        //System.out.println(ctx.channel().remoteAddress() + " Say : " + msg);
 
         serverEvent.processing(ctx, msg);
     }
@@ -26,8 +26,8 @@ public class RPGServerHandler extends SimpleChannelInboundHandler<String>{
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
 
-        System.out.println("RemoteAddress : " + ctx.channel().remoteAddress() + " active !");
-        ctx.writeAndFlush( "Welcome to " + InetAddress.getLocalHost().getHostName() + " service!\n");
+        //System.out.println("RemoteAddress : " + ctx.channel().remoteAddress() + " active !");
+        //ctx.writeAndFlush( "Welcome to " + InetAddress.getLocalHost().getHostName() + " service!\n");
 
         super.channelActive(ctx);
     }

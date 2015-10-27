@@ -51,7 +51,7 @@ public class ServerEvent implements TimerTask{
         // TODO split processing and parsing
         String[] result = msg.split(" ");
         int id = StringToInt(result[1]);
-        System.out.println(ctx.toString());
+        //System.out.println(ctx.toString());
 
 
         synchronized (this) {
@@ -61,10 +61,10 @@ public class ServerEvent implements TimerTask{
                 if(treasures[id].getStatus() == null){
                     treasures[id].setStatus(ctx.toString());
 
-                    ctx.writeAndFlush("YES " + result[1]);
+                    ctx.writeAndFlush("YES " + result[1] + "\n");
                 }
                 else{
-                    ctx.writeAndFlush("NO " + result[1]);
+                    ctx.writeAndFlush("NO " + result[1] + "\n");
                 }
             } else if(result[0].equals(RELEASE)) {
                 treasures[id].setStatus(null);
