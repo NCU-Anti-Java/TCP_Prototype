@@ -2,19 +2,48 @@ package com.github.tjjh89017.TCP_Prototype;
 
 
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.util.HashedWheelTimer;
+import io.netty.util.Timeout;
+import io.netty.util.Timer;
+import io.netty.util.TimerTask;
 
-public class ServerEvent {
+import java.util.concurrent.TimeUnit;
 
-    private final String GET = "GET";
-    private final String RELEASE = "RELEASE";
-    private final int TREASURE_NUM = 3;
+
+public class ServerEvent implements TimerTask{
+
+    private final static String YES = "YES";
+    private final static String NO = "NO";
+    private final static String GET = "GET";
+    private final static String RELEASE = "RELEASE";
+    private final static int TREASURE_NUM = 3;
+    private final static int DELAY = 3;
 
     private Treasure[] treasures = new Treasure[TREASURE_NUM];
+    private Timer timer = new HashedWheelTimer();
 
     public ServerEvent(){
 
         for(int i = 0; i < TREASURE_NUM; i++)
             treasures[i] = new Treasure();
+
+        timer.newTimeout(this, DELAY, TimeUnit.SECONDS);
+    }
+
+    @Override
+    public void run(Timeout timeout) throws Exception {
+
+        String status = null;
+        for(int i = 0; i < TREASURE_NUM; i++){
+            status = treasures[i].getStatus();
+            System.out.print(IntToString(i) + " ");
+            if(status != null)
+                System.out.println(YES + " " + status);
+            else
+                System.out.println(NO + " 0");
+
+        }
+        timer.newTimeout(this, DELAY, TimeUnit.SECONDS);
     }
 
     public void processing(ChannelHandlerContext ctx, String msg){
@@ -47,4 +76,11 @@ public class ServerEvent {
 
         return string.charAt(0) - 'A';
     }
+
+    private String IntToString(int i){
+
+        return "" + (char)('A' + i);
+    }
+
+
 }
