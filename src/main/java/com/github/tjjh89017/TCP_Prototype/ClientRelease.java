@@ -26,7 +26,7 @@ public class ClientRelease extends TimerTask{
                     int time = treasures[i].getTime() - 1;
                     treasures[i].setTime(time);
                     if (time == 0) {
-                        System.out.println("re");
+                        //System.out.println("re");
                         treasures[i].setStatus(null);
                         client.send(RELEASE + " " + IntToString(i) + "\n");
                     }

@@ -24,7 +24,7 @@ public class ClientGet extends TimerTask{
     @Override
     public void run() {
 
-        System.out.println("Cleint GET " + time);
+        //System.out.println("Cleint GET " + time);
         try {
             //for (int i = 0; i < treasures.length; i++) {
             time = (time + 1) % 3;
@@ -34,7 +34,7 @@ public class ClientGet extends TimerTask{
                     // get
                     client.send(GET + " " + IntToString(time) + "\n");
                     if (client.read().contains(YES)) {
-                        System.out.println("get");
+                        //System.out.println("get");
                         treasures[time].setStatus(YES);
                         treasures[time].setTime(TIMEOUT);
                     }
