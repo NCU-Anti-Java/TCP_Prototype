@@ -24,7 +24,7 @@ public class ServerEvent {
         int id = StringToInt(result[1]);
         System.out.println(ctx.toString());
 
-        
+
         synchronized (this) {
             if (result[0].equals(GET)) {
                 // check if it could
